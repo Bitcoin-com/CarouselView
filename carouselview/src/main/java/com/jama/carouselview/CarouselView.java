@@ -70,7 +70,7 @@ public class CarouselView extends FrameLayout {
             this.setScaleOnScroll(attributes.getBoolean(R.styleable.CarouselView_scaleOnScroll, false));
             this.setAutoPlay(attributes.getBoolean(R.styleable.CarouselView_setAutoPlay, false));
             this.setAutoPlayDelay(attributes.getInteger(R.styleable.CarouselView_setAutoPlayDelay, 2500));
-            this.setCarouselOffset(this.getOffset(attributes.getInteger(R.styleable.CarouselView_carouselOffset, 0)));
+            this.setCarouselOffset(this.getOffset(attributes.getInteger(R.styleable.CarouselView_carouselOffset, 1)));
             int resourceId = attributes.getResourceId(R.styleable.CarouselView_resource, 0);
             if (resourceId != 0) {
                 this.setResource(resourceId);
