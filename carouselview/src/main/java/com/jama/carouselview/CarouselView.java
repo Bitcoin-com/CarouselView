@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
@@ -24,6 +25,7 @@ public class CarouselView extends FrameLayout {
     private CarouselLinearLayoutManager layoutManager;
     private CarouselViewListener carouselViewListener;
     private CarouselScrollListener carouselScrollListener;
+    private OffsetType offsetType;
     private SnapHelper snapHelper;
     private boolean enableAutoPlay;
     private int autoPlayDelay;
@@ -33,6 +35,7 @@ public class CarouselView extends FrameLayout {
     private int size;
     private int spacing;
     private int currentItem;
+    private boolean fixedSize;
     private boolean isResourceSet = false;
 
     public CarouselView(@NonNull Context context) {
@@ -53,8 +56,11 @@ public class CarouselView extends FrameLayout {
         this.carouselRecyclerView = carouselView.findViewById(R.id.carouselRecyclerView);
         this.pageIndicatorView = carouselView.findViewById(R.id.pageIndicatorView);
         this.autoPlayHandler = new Handler();
-        this.snapHelper = new CarouselSnapHelper();
-        carouselRecyclerView.setHasFixedSize(false);
+
+        carouselRecyclerView.setHasFixedSize(fixedSize);
+        if(getHasFixedSize()) {
+            carouselRecyclerView.setItemViewCacheSize(size);
+        }
         this.initializeAttributes(attributeSet);
     }
 
@@ -64,6 +70,7 @@ public class CarouselView extends FrameLayout {
             this.setScaleOnScroll(attributes.getBoolean(R.styleable.CarouselView_scaleOnScroll, false));
             this.setAutoPlay(attributes.getBoolean(R.styleable.CarouselView_setAutoPlay, false));
             this.setAutoPlayDelay(attributes.getInteger(R.styleable.CarouselView_setAutoPlayDelay, 2500));
+            this.setCarouselOffset(this.getOffset(attributes.getInteger(R.styleable.CarouselView_carouselOffset, 0)));
             int resourceId = attributes.getResourceId(R.styleable.CarouselView_resource, 0);
             if (resourceId != 0) {
                 this.setResource(resourceId);
@@ -80,6 +87,7 @@ public class CarouselView extends FrameLayout {
             this.setIndicatorPadding(attributes.getInteger(R.styleable.CarouselView_indicatorPadding, 5));
             this.setSize(attributes.getInteger(R.styleable.CarouselView_size, 0));
             this.setSpacing(attributes.getInteger(R.styleable.CarouselView_spacing, 0));
+            this.setHasFixedSize(attributes.getBoolean(R.styleable.CarouselView_fixedSize, false));
             attributes.recycle();
         }
     }
@@ -100,10 +108,10 @@ public class CarouselView extends FrameLayout {
 
     private void setAdapter() {
         this.layoutManager = new CarouselLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        this.layoutManager.isOffsetStart(false); //TODO remove the need for this call by hardcoding it. we don't really need it.
+        this.layoutManager.isOffsetStart(this.getCarouselOffset() == OffsetType.START);
         if (this.getScaleOnScroll()) this.layoutManager.setScaleOnScroll(true);
         carouselRecyclerView.setLayoutManager(this.layoutManager);
-        this.carouselRecyclerView.setAdapter(new CarouselViewAdapter(getCarouselViewListener(), getResource(), getSize(), carouselRecyclerView, this.getSpacing(), false));
+        this.carouselRecyclerView.setAdapter(new CarouselViewAdapter(getCarouselViewListener(), getResource(), getSize(), carouselRecyclerView, this.getSpacing(), this.getCarouselOffset() == OffsetType.CENTER));
         this.snapHelper.attachToRecyclerView(this.carouselRecyclerView);
         this.setScrollListener();
         this.enableAutoPlay();
@@ -166,6 +174,35 @@ public class CarouselView extends FrameLayout {
                 }
             }
         }, getAutoPlayDelay());
+    }
+
+    public void setCarouselOffset(OffsetType offsetType) {
+        this.offsetType = offsetType;
+        switch (offsetType) {
+            case CENTER:
+                this.snapHelper = new LinearSnapHelper();
+                break;
+            case START:
+                this.snapHelper = new CarouselSnapHelper();
+                break;
+        }
+    }
+
+    public OffsetType getCarouselOffset() {
+        return this.offsetType;
+    }
+
+    private OffsetType getOffset(int value) {
+        OffsetType offset;
+        switch (value) {
+            case 1:
+                offset = OffsetType.CENTER;
+                break;
+            case 0:
+            default:
+                offset = OffsetType.START;
+        }
+        return offset;
     }
 
     public int getCurrentItem() {
@@ -238,6 +275,14 @@ public class CarouselView extends FrameLayout {
 
     public void setSpacing(int spacing) {
         this.spacing = spacing;
+    }
+
+    public boolean getHasFixedSize() {
+        return this.fixedSize;
+    }
+
+    public void setHasFixedSize(boolean fixedSize) {
+        this.fixedSize = fixedSize;
     }
 
     public int getResource() {
