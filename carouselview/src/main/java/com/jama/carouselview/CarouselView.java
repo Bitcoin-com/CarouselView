@@ -111,7 +111,7 @@ public class CarouselView extends FrameLayout {
         this.layoutManager.isOffsetStart(this.getCarouselOffset() == OffsetType.START);
         if (this.getScaleOnScroll()) this.layoutManager.setScaleOnScroll(true);
         carouselRecyclerView.setLayoutManager(this.layoutManager);
-        this.carouselRecyclerView.setAdapter(new CarouselViewAdapter(getCarouselViewListener(), getResource(), getSize(), carouselRecyclerView, this.getSpacing(), this.getCarouselOffset() == OffsetType.CENTER));
+        this.carouselRecyclerView.setAdapter(new CarouselViewAdapter(getCarouselViewListener(), getResource(), getSize(), carouselRecyclerView, this.getSpacing(), this.getCarouselOffset() == OffsetType.START));
         this.snapHelper.attachToRecyclerView(this.carouselRecyclerView);
         this.setScrollListener();
         this.enableAutoPlay();
