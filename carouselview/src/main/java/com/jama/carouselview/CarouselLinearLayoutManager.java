@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CarouselLinearLayoutManager extends LinearLayoutManager {
 
-    private boolean isOffsetStart;
+    private boolean isOffsetCenter;
     private boolean scaleOnScroll = false;
 
     CarouselLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
@@ -33,7 +33,7 @@ public class CarouselLinearLayoutManager extends LinearLayoutManager {
                 float childWidthHalf = childWidth / 2.f;
                 float childCenter = child.getLeft() + childWidthHalf;
 
-                float parentWidth = this.isOffsetStart ? childWidth : getWidth();
+                float parentWidth = this.isOffsetCenter ? childWidth : getWidth();
                 float parentWidthHalf = parentWidth / 2.f;
 
                 float d0 = 0.f;
@@ -56,8 +56,8 @@ public class CarouselLinearLayoutManager extends LinearLayoutManager {
         }
     }
 
-    void isOffsetStart(boolean isOffsetStart) {
-        this.isOffsetStart = isOffsetStart;
+    void isOffsetCenter(boolean isOffsetCenter) {
+        this.isOffsetCenter = isOffsetCenter;
     }
 
     void setScaleOnScroll(boolean scaleOnScroll) {
