@@ -220,6 +220,10 @@ public class CarouselView extends FrameLayout {
         this.carouselRecyclerView.smoothScrollToPosition(this.currentItem);
     }
 
+    public RecyclerView getCarouselRecyclerView() {
+        return this.carouselRecyclerView;
+    }
+
     public int getIndicatorRadius() {
         return this.pageIndicatorView.getRadius();
     }
