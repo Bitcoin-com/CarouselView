@@ -14,15 +14,15 @@ public class CarouselViewAdapter extends RecyclerView.Adapter<CarouselViewAdapte
     private final int size;
     private final RecyclerView recyclerView;
     private final CarouselOffset carouselOffset;
-    private final boolean isOffsetStart;
+    private final boolean isOffsetCenter;
     private final int spacing;
 
-    CarouselViewAdapter(CarouselViewListener carouselViewListener, int resource, int size, RecyclerView recyclerView, int spacing, boolean isOffsetStart) {
+    CarouselViewAdapter(CarouselViewListener carouselViewListener, int resource, int size, RecyclerView recyclerView, int spacing, boolean isOffsetCenter) {
         this.carouselViewListener = carouselViewListener;
         this.resource = resource;
         this.size = size;
         this.recyclerView = recyclerView;
-        this.isOffsetStart = isOffsetStart;
+        this.isOffsetCenter = isOffsetCenter;
         this.spacing = spacing;
         this.carouselOffset = new CarouselOffset();
     }
@@ -39,7 +39,7 @@ public class CarouselViewAdapter extends RecyclerView.Adapter<CarouselViewAdapte
         if (this.carouselViewListener != null) {
             this.carouselViewListener.onBindView(holder.itemView, position);
         }
-        this.carouselOffset.init(recyclerView, holder.itemView, this.spacing, this.isOffsetStart);
+        this.carouselOffset.init(recyclerView, holder.itemView, this.spacing, this.isOffsetCenter);
     }
 
     @Override

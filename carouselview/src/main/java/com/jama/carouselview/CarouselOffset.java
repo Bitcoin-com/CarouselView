@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 class CarouselOffset {
 
-    void init(final RecyclerView recyclerView, final View view, final int spacing, final boolean isOffsetStart) {
+    void init(final RecyclerView recyclerView, final View view, final int spacing, final boolean isOffsetCenter) {
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 if (recyclerView.getItemDecorationCount() > 0) {
                     recyclerView.removeItemDecorationAt(0);
                 }
-                if (isOffsetStart) {
+                if (isOffsetCenter) {
                     recyclerView.addItemDecoration(new CarouselItemDecoration(view.getWidth(), spacing), 0);
                 } else {
                     recyclerView.addItemDecoration(new CarouselItemDecoration(0, spacing), 0);
