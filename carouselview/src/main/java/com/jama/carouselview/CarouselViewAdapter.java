@@ -11,7 +11,7 @@ public class CarouselViewAdapter extends RecyclerView.Adapter<CarouselViewAdapte
 
     private final CarouselViewListener carouselViewListener;
     private final int resource;
-    private final int size;
+    private int size;
     private final RecyclerView recyclerView;
     private final CarouselOffset carouselOffset;
     private final boolean isOffsetCenter;
@@ -45,6 +45,10 @@ public class CarouselViewAdapter extends RecyclerView.Adapter<CarouselViewAdapte
     @Override
     public int getItemCount() {
         return this.size;
+    }
+
+    public void setSize(int newSize) {
+        this.size = newSize;
     }
 
     static class CarouselAdapterViewHolder extends RecyclerView.ViewHolder {

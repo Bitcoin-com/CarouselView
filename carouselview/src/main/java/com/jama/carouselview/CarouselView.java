@@ -22,6 +22,7 @@ public class CarouselView extends FrameLayout {
     private final Context context;
     private PageIndicatorView pageIndicatorView;
     private RecyclerView carouselRecyclerView;
+    private CarouselViewAdapter carouselViewAdapter;
     private CarouselLinearLayoutManager layoutManager;
     private CarouselViewListener carouselViewListener;
     private CarouselScrollListener carouselScrollListener;
@@ -114,7 +115,14 @@ public class CarouselView extends FrameLayout {
         if (this.getScaleOnScroll()) this.layoutManager.setScaleOnScroll(true);
         this.layoutManager.setAllowScrolling(this.getAllowScrolling());
         carouselRecyclerView.setLayoutManager(this.layoutManager);
-        this.carouselRecyclerView.setAdapter(new CarouselViewAdapter(getCarouselViewListener(), getResource(), getSize(), carouselRecyclerView, this.getSpacing(), this.getCarouselOffset() == OffsetType.CENTER));
+        if(this.carouselViewAdapter == null) {
+            this.carouselViewAdapter = new CarouselViewAdapter(getCarouselViewListener(), getResource(), getSize(), carouselRecyclerView, this.getSpacing(), this.getCarouselOffset() == OffsetType.CENTER);
+        } else {
+            if(this.carouselViewAdapter.getItemCount() != this.getSize()) {
+                this.carouselViewAdapter.setSize(this.getSize());
+            }
+        }
+        this.carouselRecyclerView.setAdapter(this.carouselViewAdapter);
         this.snapHelper.attachToRecyclerView(this.carouselRecyclerView);
         this.setScrollListener();
         this.enableAutoPlay();
@@ -333,6 +341,7 @@ public class CarouselView extends FrameLayout {
     public void show() {
         this.validate();
         this.setAdapter();
+        this.carouselViewAdapter.notifyDataSetChanged();
     }
 
 }
