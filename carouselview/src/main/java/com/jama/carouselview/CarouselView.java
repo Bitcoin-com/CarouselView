@@ -37,6 +37,7 @@ public class CarouselView extends FrameLayout {
     private int currentItem;
     private boolean fixedSize;
     private boolean isResourceSet = false;
+    private boolean allowScrolling = true;
 
     public CarouselView(@NonNull Context context) {
         super(context);
@@ -57,7 +58,6 @@ public class CarouselView extends FrameLayout {
         this.pageIndicatorView = carouselView.findViewById(R.id.pageIndicatorView);
         this.autoPlayHandler = new Handler();
 
-        carouselRecyclerView.setNestedScrollingEnabled(false);
         carouselRecyclerView.setHasFixedSize(fixedSize);
         if(getHasFixedSize()) {
             carouselRecyclerView.setItemViewCacheSize(size);
@@ -89,6 +89,7 @@ public class CarouselView extends FrameLayout {
             this.setSize(attributes.getInteger(R.styleable.CarouselView_size, 0));
             this.setSpacing(attributes.getInteger(R.styleable.CarouselView_spacing, 0));
             this.setHasFixedSize(attributes.getBoolean(R.styleable.CarouselView_fixedSize, false));
+            this.setAllowScrolling(attributes.getBoolean(R.styleable.CarouselView_allowScrolling, true));
             attributes.recycle();
         }
     }
@@ -111,6 +112,7 @@ public class CarouselView extends FrameLayout {
         this.layoutManager = new CarouselLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         this.layoutManager.isOffsetCenter(this.getCarouselOffset() == OffsetType.CENTER);
         if (this.getScaleOnScroll()) this.layoutManager.setScaleOnScroll(true);
+        this.layoutManager.setAllowScrolling(this.getAllowScrolling());
         carouselRecyclerView.setLayoutManager(this.layoutManager);
         this.carouselRecyclerView.setAdapter(new CarouselViewAdapter(getCarouselViewListener(), getResource(), getSize(), carouselRecyclerView, this.getSpacing(), this.getCarouselOffset() == OffsetType.CENTER));
         this.snapHelper.attachToRecyclerView(this.carouselRecyclerView);
@@ -288,6 +290,14 @@ public class CarouselView extends FrameLayout {
 
     public void setHasFixedSize(boolean fixedSize) {
         this.fixedSize = fixedSize;
+    }
+
+    public boolean getAllowScrolling() {
+        return this.allowScrolling;
+    }
+
+    public void setAllowScrolling(boolean allowScrolling) {
+        this.allowScrolling = allowScrolling;
     }
 
     public int getResource() {

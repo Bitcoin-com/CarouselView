@@ -30,6 +30,7 @@
         <attr name="size" format="integer" />
         <attr name="spacing" format="integer" />
         <attr name="fixedSize" format="boolean" />
+        <attr name="allowScrolling" format="boolean" />
         <attr name="resource" format="reference" />
     </declare-styleable>
 

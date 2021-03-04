@@ -10,6 +10,7 @@ public class CarouselLinearLayoutManager extends LinearLayoutManager {
 
     private boolean isOffsetCenter;
     private boolean scaleOnScroll = false;
+    private boolean allowScrolling = true;
 
     CarouselLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
@@ -19,6 +20,11 @@ public class CarouselLinearLayoutManager extends LinearLayoutManager {
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         super.onLayoutChildren(recycler, state);
         scrollHorizontallyBy(0, recycler, state);
+    }
+
+    @Override
+    public boolean canScrollHorizontally() {
+        return allowScrolling;
     }
 
     @Override
@@ -50,10 +56,8 @@ public class CarouselLinearLayoutManager extends LinearLayoutManager {
                 child.setScaleX(position);
                 child.setScaleY(position);
             }
-            return scrolled;
-        } else {
-            return scrolled;
         }
+        return scrolled;
     }
 
     void isOffsetCenter(boolean isOffsetCenter) {
@@ -64,4 +68,7 @@ public class CarouselLinearLayoutManager extends LinearLayoutManager {
         this.scaleOnScroll = scaleOnScroll;
     }
 
+    void setAllowScrolling(boolean allowScrolling) {
+        this.allowScrolling = allowScrolling;
+    }
 }
