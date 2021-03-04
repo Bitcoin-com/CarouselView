@@ -32,7 +32,7 @@ allprojects {
 
 ```
 dependencies {
-    implementation 'com.github.jama5262:CarouselView:1.1.0'
+    implementation 'com.github.bitcoin-com:carouselview-thin:1.1.0'
 }
 ```
 

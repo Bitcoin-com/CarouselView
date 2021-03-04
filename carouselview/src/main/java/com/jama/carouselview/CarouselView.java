@@ -57,6 +57,7 @@ public class CarouselView extends FrameLayout {
         this.pageIndicatorView = carouselView.findViewById(R.id.pageIndicatorView);
         this.autoPlayHandler = new Handler();
 
+        carouselRecyclerView.setNestedScrollingEnabled(false);
         carouselRecyclerView.setHasFixedSize(fixedSize);
         if(getHasFixedSize()) {
             carouselRecyclerView.setItemViewCacheSize(size);
