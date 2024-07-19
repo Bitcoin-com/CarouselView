@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 29
@@ -21,6 +22,20 @@ android {
         }
     }
 
+}
+
+afterEvaluate{
+    publishing{
+        publications{
+            release(MavenPublication){
+                from components.findByName("release")
+
+                groupId='com.github.Bitcoin-com'
+                artifactId = 'carouselview-thin'
+                version = '1.0.4'
+            }
+        }
+    }
 }
 
 dependencies {
